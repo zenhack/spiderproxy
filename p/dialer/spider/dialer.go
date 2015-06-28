@@ -1,4 +1,4 @@
-package spider
+package spider // import "zenhack.net/go/spiderproxy/p/dialer/spider"
 
 import (
 	"fmt"

@@ -1,6 +1,6 @@
 // package glob defines a dialer which multiplexes other dialers, dispatching
 // base on shell glob patterns.
-package glob // "zenhack.net/go/spiderproxy/dialer/glob"
+package glob // import "zenhack.net/go/spiderproxy/p/dialer/glob"
 
 import (
 	"net"
