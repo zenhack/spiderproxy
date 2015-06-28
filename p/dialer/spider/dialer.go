@@ -35,10 +35,10 @@ func NewDialer(config Config, root dialer.Dialer, sshAgent agent.Agent) (dialer.
 		}
 		client := ssh.NewClient(sshConn, chans, reqs)
 		err = agent.ForwardToAgent(client, sshAgent)
-		for i := range(node.Match) {
+		for i := range node.Match {
 			globDialer.Append(node.Match[i], client)
 		}
-		for i := range(node.Next) {
+		for i := range node.Next {
 			err := build(node.Next[i], client)
 			if err != nil {
 				sshConn.Close()
@@ -48,7 +48,7 @@ func NewDialer(config Config, root dialer.Dialer, sshAgent agent.Agent) (dialer.
 		}
 		return nil
 	}
-	for i := range(config) {
+	for i := range config {
 		err := build(config[i], root)
 		if err != nil {
 			return nil, err

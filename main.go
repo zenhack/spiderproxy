@@ -10,14 +10,13 @@ import (
 )
 
 import (
-
 	"fmt"
 	"net"
 	"os"
 )
 
 var (
-	addr = flag.String("addr", ":1080", "port to start a socks5 server on")
+	addr        = flag.String("addr", ":1080", "port to start a socks5 server on")
 	config_file = flag.String("config", "spiderproxy.json", "config file")
 )
 
@@ -32,7 +31,7 @@ func main() {
 	flag.Parse()
 	file, err := os.Open(*config_file)
 	checkfatal(err)
-	config, err:= spider.LoadConfig(file)
+	config, err := spider.LoadConfig(file)
 	checkfatal(err)
 
 	authSock := os.Getenv("SSH_AUTH_SOCK")

@@ -25,7 +25,7 @@ func LoadConfig(r io.Reader) (Config, error) {
 	dec := json.NewDecoder(r)
 	err := dec.Decode(&ret)
 	if err == nil {
-		for i := range(ret) {
+		for i := range ret {
 			ret[i].normalize()
 		}
 	}
@@ -34,9 +34,13 @@ func LoadConfig(r io.Reader) (Config, error) {
 
 // Fill in defaults that were not specified in the config file.
 func (n *Node) normalize() {
-	if n.User == "" { n.User = os.Getenv("USER") }
-	if n.Port == 0 { n.Port = 22 }
-	for i := range(n.Next) {
+	if n.User == "" {
+		n.User = os.Getenv("USER")
+	}
+	if n.Port == 0 {
+		n.Port = 22
+	}
+	for i := range n.Next {
 		n.Next[i].normalize()
 	}
 }
