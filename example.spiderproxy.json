@@ -1,0 +1,31 @@
+[
+	{
+		"comment": "SSH Gateway to really paranoid place",
+		"host": "ssh-gw.paranoia.example.org",
+		"match": ["10.100.*"],
+		"next": [
+			{
+				"comment": "Second gateway into super secret managemnt network",
+				"host": "10.100.32.13",
+				"match": ["192.168.99.*"]
+			},
+			{
+				"comment": "Gateway into my stuff; they only gave me one IP...",
+				"host": "10.100.19.45",
+				"match": ["172.16.*"]
+			}
+		]
+	},
+	{
+		"comment": "Management network for terrible insecure BMCs",
+		"host": "mgmt.totally-reasonable-fear.example.com",
+		"match": ["10.99.*"]
+	},
+	{
+		"comment": "Server at home",
+		"host": "my-silly-subdomain.example.net",
+		"user": "totally-unprofessional-psuedonym",
+		"port": 1337,
+		"match": ["10.0.0.*"]
+	}
+]
