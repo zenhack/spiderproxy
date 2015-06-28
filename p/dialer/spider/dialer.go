@@ -11,19 +11,18 @@ import (
 	"zenhack.net/go/spiderproxy/p/dialer/glob"
 )
 
-func NewDialer(node *Node, root dialer.Dialer, agent agent.Agent) (dialer.Dialer, error) {
-	clientConfig := &ssh.ClientConfig{
-		User: node.User,
-		Auth: []ssh.AuthMethod{
-			ssh.PublicKeysCallback(agent.Signers),
-		},
-	}
+func NewDialer(config Config, root dialer.Dialer, sshAgent agent.Agent) (dialer.Dialer, error) {
+	sshauth := []ssh.AuthMethod{ssh.PublicKeysCallback(sshAgent.Signers)}
 	globDialer := glob.NewDialer(root)
 
 	// If we just do build := ..., then the variable build won't be visible
 	// inside the function. This is a hack to get around that:
 	var build func(node *Node, d dialer.Dialer) error
 	build = func(node *Node, d dialer.Dialer) error {
+		clientConfig := &ssh.ClientConfig{
+			User: node.User,
+			Auth: sshauth,
+		}
 		address := net.JoinHostPort(node.Host, fmt.Sprint(node.Port))
 		conn, err := d.Dial("tcp", address)
 		if err != nil {
@@ -35,6 +34,7 @@ func NewDialer(node *Node, root dialer.Dialer, agent agent.Agent) (dialer.Dialer
 			return err
 		}
 		client := ssh.NewClient(sshConn, chans, reqs)
+		err = agent.ForwardToAgent(client, sshAgent)
 		for i := range(node.Match) {
 			globDialer.Append(node.Match[i], client)
 		}
@@ -48,9 +48,11 @@ func NewDialer(node *Node, root dialer.Dialer, agent agent.Agent) (dialer.Dialer
 		}
 		return nil
 	}
-	err := build(node, root)
-	if err != nil {
-		return nil, err
+	for i := range(config) {
+		err := build(config[i], root)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return globDialer, nil
 }
