@@ -10,6 +10,10 @@ will build the tree, and route traffic based on the "matches" rules.
 Spiderproxy uses your ssh agent to authenticate; it must be running in 
 order for this to work.
 
+Install with:
+
+    go get zenhack.net/go/spiderproxy
+
 # LICENSE
 
 Free/Open Source under the MIT license (see `COPYING`)
