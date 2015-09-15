@@ -38,8 +38,6 @@ with the following fields:
 The file `example.spiderproxy.json` in the root of this repository provides
 an example.
 
-Detailed usage documentation is in the pipeline, but for now the file
-
 # Invocation
 
 If run with no arguments, Spiderproxy will read the file `spiderproxy.json`
